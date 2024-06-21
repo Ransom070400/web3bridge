@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Number Guesser</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    input[type="number"] {
+      width: 80px;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #f90d39;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    #feedback {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <img src="gida2.jpg"="Login Image" class="login-image">
+    <h1>Number Guesser</h1>
+    <p>Guess a number between 1 and 100:</p>
+    <input type="number" id="guess" min="1" max="100">
+    <button id="check">Check</button>
+    <div id="feedback"></div>
+    <p id="attempts"></p>
+  </div>
+
+  <script>
+    const guessInput = document.getElementById('guess');
+    const checkButton = document.getElementById('check');
+    const feedback = document.getElementById('feedback');
+    const attemptsElement = document.getElementById('attempts');
+
+    let secretNumber = generateRandomNumber();
+    let attemptsLeft = 10;
+
+    attemptsElement.textContent = `Attempts left: ${attemptsLeft}`;
+
+    checkButton.addEventListener('click', () => {
+      const guess = parseInt(guessInput.value);
+
+      if (isNaN(guess) || guess < 1 || guess > 100) {
+        feedback.textContent = "Please enter a valid number between 1 and 100.";
+        return;
+      }
+
+      attemptsLeft--;
+      attemptsElement.textContent = `Attempts left: ${attemptsLeft}`;
+
+      if (guess === secretNumber) {
+        feedback.textContent = `Congratulations! You guessed the number in ${10 - attemptsLeft} attempts.`;
+        checkButton.disabled = true;
+      } else if (guess < secretNumber) {
+        feedback.textContent = "Too low! Try again.";
+      } else {
+        feedback.textContent = "Too high! Try again.";
+      }
+
+      if (attemptsLeft === 0) {
+        feedback.textContent = `You ran out of attempts! The secret number was ${secretNumber}.`;
+        checkButton.disabled = true;
+      }
+    });
+
+    function generateRandomNumber() {
+      return Math.floor(Math.random() * 100) + 1;
+    }
+  </script>
+</body>
+</html>
